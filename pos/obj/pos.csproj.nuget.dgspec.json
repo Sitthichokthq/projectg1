@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/sitthichokthq/Documents/C#_Project/projectg1/pos/pos.csproj": {}
+    "/workspaces/projectg1/pos/pos.csproj": {}
   },
   "projects": {
-    "/Users/sitthichokthq/Documents/C#_Project/projectg1/pos/pos.csproj": {
+    "/workspaces/projectg1/pos/pos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/sitthichokthq/Documents/C#_Project/projectg1/pos/pos.csproj",
+        "projectUniqueName": "/workspaces/projectg1/pos/pos.csproj",
         "projectName": "pos",
-        "projectPath": "/Users/sitthichokthq/Documents/C#_Project/projectg1/pos/pos.csproj",
-        "packagesPath": "/Users/sitthichokthq/.nuget/packages/",
-        "outputPath": "/Users/sitthichokthq/Documents/C#_Project/projectg1/pos/obj/",
+        "projectPath": "/workspaces/projectg1/pos/pos.csproj",
+        "packagesPath": "/home/codespace/.nuget/packages/",
+        "outputPath": "/workspaces/projectg1/pos/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/sitthichokthq/.nuget/NuGet/NuGet.Config"
+          "/home/codespace/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -61,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.402/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

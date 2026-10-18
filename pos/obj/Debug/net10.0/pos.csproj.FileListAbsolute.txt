@@ -1,0 +1,15 @@
+/workspaces/projectg1/pos/bin/Debug/net10.0/pos
+/workspaces/projectg1/pos/bin/Debug/net10.0/pos.deps.json
+/workspaces/projectg1/pos/bin/Debug/net10.0/pos.runtimeconfig.json
+/workspaces/projectg1/pos/bin/Debug/net10.0/pos.dll
+/workspaces/projectg1/pos/bin/Debug/net10.0/pos.pdb
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.AssemblyInfoInputs.cache
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.AssemblyInfo.cs
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.csproj.CoreCompileInputs.cache
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.sourcelink.json
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.dll
+/workspaces/projectg1/pos/obj/Debug/net10.0/refint/pos.dll
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.pdb
+/workspaces/projectg1/pos/obj/Debug/net10.0/pos.genruntimeconfig.cache
+/workspaces/projectg1/pos/obj/Debug/net10.0/ref/pos.dll

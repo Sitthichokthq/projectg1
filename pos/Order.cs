@@ -59,15 +59,15 @@ namespace CoffeeShop
         public void Show()
         {
             Console.WriteLine();
-            Console.WriteLine("========== รายการสั่งซื้อ ==========");
+            Console.WriteLine("========== Order List ==========");
             for (int i = 0; i < count; i++)
             {
                 Console.WriteLine((i + 1) + ". " + lines[i].Item.Name
                     + " x " + lines[i].Quantity
-                    + " = " + lines[i].Total + " บาท");
+                    + " = " + lines[i].Total + " Bath");
             }
             Console.WriteLine("------------------------------------");
-            Console.WriteLine("ราคารวม: " + GetSubtotal() + " บาท");
+            Console.WriteLine("Subtotal: " + GetSubtotal() + " Bath");
         }
     }
 }

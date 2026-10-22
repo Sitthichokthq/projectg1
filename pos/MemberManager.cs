@@ -10,7 +10,7 @@ namespace CoffeeShop
 
         public MemberManager()
         {
-            // สมาชิกตัวอย่างไว้ทดสอบ (เบอร์ 0812345678)
+            // สมาชิกตัวอย่างไว้ทดสอบบบบบ
             Register("Somchai", "0812345678");
         }
 

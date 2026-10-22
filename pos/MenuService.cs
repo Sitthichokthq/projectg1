@@ -11,22 +11,22 @@ namespace CoffeeShop
         private static MenuCategory[] CreateMenu()
         {
             MenuCategory[] cats = new MenuCategory[3];
-
-            cats[0] = new MenuCategory("กาแฟ", new MenuItem[]
+            // แก้ทีหลัง
+            cats[0] = new MenuCategory("Coffee", new MenuItem[]
             {
                 new MenuItem("Americano", 50),
                 new MenuItem("Latte", 60),
                 new MenuItem("Cappuccino", 65)
             });
 
-            cats[1] = new MenuCategory("ชา / นม", new MenuItem[]
+            cats[1] = new MenuCategory("Tea / Milk", new MenuItem[]
             {
                 new MenuItem("Thai Tea", 45),
                 new MenuItem("Green Tea", 50),
                 new MenuItem("Fresh Milk", 40)
             });
 
-            cats[2] = new MenuCategory("เบเกอรี่", new MenuItem[]
+            cats[2] = new MenuCategory("Bakery", new MenuItem[]
             {
                 new MenuItem("Croissant", 55),
                 new MenuItem("Brownie", 60),
@@ -39,12 +39,12 @@ namespace CoffeeShop
         public static void ShowCategories()
         {
             Console.WriteLine();
-            Console.WriteLine("--- ประเภทเมนู ---");
+            Console.WriteLine("--- Menu Category ---");
             for (int i = 0; i < Categories.Length; i++)
             {
                 Console.WriteLine((i + 1) + ". " + Categories[i].Name);
             }
-            Console.WriteLine("0. จบการสั่ง / ไปชำระเงิน");
+            Console.WriteLine("0. Finish ordering / Proceed to payment");
         }
 
         public static void ShowItems(MenuCategory category)
@@ -54,9 +54,9 @@ namespace CoffeeShop
             for (int i = 0; i < category.Items.Length; i++)
             {
                 Console.WriteLine((i + 1) + ". " + category.Items[i].Name
-                    + " (" + category.Items[i].Price + " บาท)");
+                    + " (" + category.Items[i].Price + " Bath)");
             }
-            Console.WriteLine("0. ย้อนกลับ");
+            Console.WriteLine("0. Go back");
         }
     }
 }

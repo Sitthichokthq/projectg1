@@ -9,8 +9,8 @@ namespace CoffeeShop
         // เก็บข้อความแบบ array แล้วเรียกใช้ตามเลขเข้าใจนะโบรววววว
         private static string[] names =
         {
-            "แบงก์ 1000", "แบงก์ 500", "แบงก์ 100", "แบงก์ 50", "แบงก์ 20",
-            "เหรียญ 10", "เหรียญ 5", "เหรียญ 2", "เหรียญ 1"
+            "Banknote 1000", "Banknote 500", "Banknote 100", "Banknote 50", "Banknote 20",
+            "Coin 10", "Coin 5", "Coin 2", "Coin 1"
         };
 
         // คำนวณส่วนลด (เฉพาะสมาชิก)
@@ -29,7 +29,7 @@ namespace CoffeeShop
                 paid = InputHelper.ReadInt("รับเงินจากลูกค้า: ", 0, 1000000);
                 if (paid < total)
                 {
-                    Console.WriteLine("เงินไม่พอ ขาดอีก " + (total - paid) + " บาท");
+                    Console.WriteLine("Not enough money; there’s still a shortfall. " + (total - paid) + " Bath");
                 }
             } while (paid < total);
             return paid;
@@ -38,7 +38,7 @@ namespace CoffeeShop
         // ทอนเงิน ให้แบงก์/เหรียญใหญ่ก่อนเสมอ
         public static void ShowChange(int change)
         {
-            Console.WriteLine("เงินทอน: " + change + " บาท");
+            Console.WriteLine("Change: " + change + " Bath");
             int remain = change;
             for (int i = 0; i < denominations.Length; i++)
             {
@@ -46,7 +46,7 @@ namespace CoffeeShop
                 remain = remain % denominations[i];
                 if (n > 0)
                 {
-                    Console.WriteLine("  " + names[i] + " จำนวน " + n);
+                    Console.WriteLine("  " + names[i] + " quantity " + n);
                 }
             }
         }

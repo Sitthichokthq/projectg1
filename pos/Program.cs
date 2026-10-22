@@ -1,5 +1,5 @@
 ﻿using System;
-
+// ถามว่าใช้ AI ไหม ใช้แต่ก็นิดหน่อยบางอันมันบัค
 namespace CoffeeShop
 {
     internal class Program
@@ -21,11 +21,11 @@ namespace CoffeeShop
                 }
                 else
                 {
-                    Console.WriteLine("ไม่มีรายการสั่งซื้อ");
+                    Console.WriteLine("No orders");
                 }
-            } while (InputHelper.ReadYesNo("\nลูกค้าคนถัดไป?"));
+            } while (InputHelper.ReadYesNo("\nNext customer?"));
 
-            Console.WriteLine("ปิดระบบ ขอบคุณครับ");
+            Console.WriteLine("Shutting down the system. Thank you.");
         }
 
         static void ShowWelcome()
@@ -33,34 +33,34 @@ namespace CoffeeShop
         {
             Console.WriteLine();
             Console.WriteLine("************************************");
-            Console.WriteLine("   ชื่อร้าน");
+            Console.WriteLine("   Shop name");
             Console.WriteLine("************************************");
         }
 
         static Member IdentifyMember()
         // เช็คระบบ สมาชิก
         {
-            if (!InputHelper.ReadYesNo("เป็นสมาชิกร้านหรือไม่?"))
+            if (!InputHelper.ReadYesNo("Are you a member of the store?"))
             {
-                if (InputHelper.ReadYesNo("ต้องการสมัครสมาชิก (ลด 5% + สะสมแต้ม)?"))
+                if (InputHelper.ReadYesNo("Do you want to register as a member (get 5% discount + earn points)?"))
                 {
-                    string name = InputHelper.ReadText("ชื่อ: ");
-                    string phone = InputHelper.ReadText("เบอร์โทร: ");
+                    string name = InputHelper.ReadText("Name: ");
+                    string phone = InputHelper.ReadText("Phone number: ");
                     Member m = memberManager.Register(name, phone);
-                    Console.WriteLine("สมัครสำเร็จ! สมาชิกหมายเลข " + m.Id);
+                    Console.WriteLine("Registration successful! Member ID: " + m.Id);
                     return m;
                 }
                 return null;
             }
 
-            string p = InputHelper.ReadText("กรอกเบอร์โทรสมาชิก: ");
+            string p = InputHelper.ReadText("Enter member phone number: ");
             Member found = memberManager.FindByPhone(p);
             if (found == null)
             {
-                Console.WriteLine("ไม่พบสมาชิก ดำเนินการเป็นลูกค้าทั่วไป");
+                Console.WriteLine("Member not found. Proceeding as a regular customer.");
                 return null;
             }
-            Console.WriteLine("สวัสดีคุณ " + found.Name + " (แต้มสะสม " + found.Points + ")");
+            Console.WriteLine("Hello " + found.Name + " (Total points: " + found.Points + ")");
             return found;
         }
 
@@ -72,7 +72,7 @@ namespace CoffeeShop
             while (ordering)
             {
                 MenuService.ShowCategories();
-                int cat = InputHelper.ReadInt("เลือกประเภท: ", 0, MenuService.Categories.Length);
+                int cat = InputHelper.ReadInt("Select category: ", 0, MenuService.Categories.Length);
 
                 if (cat == 0)
                 {
@@ -82,20 +82,20 @@ namespace CoffeeShop
                 {
                     MenuCategory category = MenuService.Categories[cat - 1];
                     MenuService.ShowItems(category);
-                    int pick = InputHelper.ReadInt("เลือกเมนู: ", 0, category.Items.Length);
+                    int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
 
                     if (pick != 0)
                     {
                         MenuItem item = category.Items[pick - 1];
-                        int qty = InputHelper.ReadInt("จำนวนกี่ชิ้น/แก้ว: ", 1, 99);
+                        int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
 
                         if (order.AddItem(item, qty))
                         {
-                            Console.WriteLine("เพิ่ม " + item.Name + " x " + qty + " แล้ว");
+                            Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
                         }
                         else
                         {
-                            Console.WriteLine("ตะกร้าเต็ม");
+                            Console.WriteLine("Cart is full.");
                         }
                     }
                 }
@@ -113,9 +113,9 @@ namespace CoffeeShop
 
             if (member != null)
             {
-                Console.WriteLine("ส่วนลดสมาชิก " + Member.DiscountPercent + "%: -" + discount + " บาท");
+                Console.WriteLine("Member discount " + Member.DiscountPercent + "%: -" + discount + " Bath");
             }
-            Console.WriteLine("ยอดที่ต้องชำระ: " + total + " บาท");
+            Console.WriteLine("Total amount to pay: " + total + " Bath");
 
             int paid = PaymentService.ReceiveMoney(total);
             PaymentService.ShowChange(paid - total);
@@ -123,9 +123,9 @@ namespace CoffeeShop
             if (member != null)
             {
                 int earned = member.AddPointsFromPurchase(total);
-                Console.WriteLine("ได้รับ " + earned + " แต้ม (รวม " + member.Points + " แต้ม)");
+                Console.WriteLine("Earned " + earned + " points (Total: " + member.Points + " points)");
             }
-            Console.WriteLine("ขอบคุณที่ใช้บริการ");
+            Console.WriteLine("Thank you for using our service.");
         }
     }
 }

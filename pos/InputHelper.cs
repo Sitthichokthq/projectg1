@@ -15,7 +15,7 @@ namespace CoffeeShop
                 {
                     return value;
                 }
-                Console.WriteLine("กรุณากรอกตัวเลข " + min + " - " + max + " เท่านั้น");
+                Console.WriteLine("Please enter the numbers." + min + " - " + max + " only");
             }
         }
 
@@ -29,7 +29,7 @@ namespace CoffeeShop
                 {
                     return text.Trim();
                 }
-                Console.WriteLine("ห้ามเว้นว่าง");
+                Console.WriteLine("Please do not leave it empty");
             }
         }
 
@@ -41,7 +41,7 @@ namespace CoffeeShop
                 string ans = Console.ReadLine();
                 if (ans == "Y" || ans == "y") return true;
                 if (ans == "N" || ans == "n") return false;
-                Console.WriteLine("กรุณาพิมพ์ Y หรือ N");
+                Console.WriteLine("Please enter Y or N");
             }
         }
     }

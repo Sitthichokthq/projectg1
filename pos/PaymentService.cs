@@ -26,7 +26,7 @@ namespace CoffeeShop
             int paid;
             do
             {
-                paid = InputHelper.ReadInt("รับเงินจากลูกค้า: ", 0, 1000000);
+                paid = InputHelper.ReadInt("Receive payment from customers: ", 0, 1000000);
                 if (paid < total)
                 {
                     Console.WriteLine("Not enough money; there’s still a shortfall. " + (total - paid) + " Bath");

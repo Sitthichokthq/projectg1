@@ -1,5 +1,5 @@
 using System;
-
+// ไม่น่าใช้
 namespace pos
 {
     internal class Menuprogram

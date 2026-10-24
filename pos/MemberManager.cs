@@ -22,6 +22,7 @@ namespace CoffeeShop
         // โหลดสมาชิกจากไฟล์ user_member.json
         private void LoadMembers()
         {
+        if (!File.Exists(FilePath))
          try
             {
                 string jsonString = File.ReadAllText(FilePath);
@@ -69,8 +70,8 @@ namespace CoffeeShop
         public void AddPoints(Member member, int Points)
         {
             if (member == null || Points <= 0) return;
-            member.AddPointsFromPurchase(Points);
-            SaveMembers();  
+            int earned = member.AddPointsFromPurchase(Points);
+            SaveMembers();
         }
 
         public Member FindByPhone(string phone)

@@ -4,13 +4,15 @@ namespace CoffeeShop
     // ระบบนี้เก็บแค่ครั้งเดียวต่อการรันโปรแกรม (ไม่เก็บลงไฟล์) ดังนั้นสมาชิกจะหายไปเมื่อปิดโปรแกรม
     public class Member
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-        public string Phone { get; private set; }
-        public int Points { get; private set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public int Points { get; set; }
 
-        public const int DiscountPercent = 5; // สมาชิกลด 5%
+        public const int DiscountPercent = 5;// สมาชิกลด 5%
 
+        public Member() { }
+        
         public Member(int id, string name, string phone)
         {
             Id = id;

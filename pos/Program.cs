@@ -122,7 +122,7 @@ namespace CoffeeShop
 
             if (member != null)
             {
-                int earned = member.AddPointsFromPurchase(total);
+                int earned = memberManager.AddPoints(member, total);
                 Console.WriteLine("Earned " + earned + " points (Total: " + member.Points + " points)");
             }
             Console.WriteLine("Thank you for using our service.");

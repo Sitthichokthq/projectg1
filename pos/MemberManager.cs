@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace CoffeeShop
+namespace CoffeeShop //ทำอะไรนอกเหนือจาก CoffeeShop
 {
     // จัดการสมาชิกด้วย Array
     public class MemberManager

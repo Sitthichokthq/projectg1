@@ -1,5 +1,7 @@
 ﻿using System;
 // ถามว่าใช้ AI ไหม ใช้แต่ก็นิดหน่อยบางอันมันบัค
+
+//แก้คนเงินไม่พอ
 namespace CoffeeShop
 {
     internal class Program

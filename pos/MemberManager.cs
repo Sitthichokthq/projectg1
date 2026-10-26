@@ -24,7 +24,7 @@ namespace CoffeeShop //ทำอะไรนอกเหนือจาก Coffe
         {
 
         if (!File.Exists(FilePath)) return;
-         try
+         if (new FileInfo(FilePath).Length == 0) return;
             {
                 string jsonString = File.ReadAllText(FilePath);
                 Member[] loaded = JsonSerializer.Deserialize<Member[]>(jsonString) ?? Array.Empty<Member>();
@@ -34,9 +34,16 @@ namespace CoffeeShop //ทำอะไรนอกเหนือจาก Coffe
                     members[i] = loaded[i];
                     count++;
                 }
-            }
-            catch (JsonException)
+            }if (count == 0)
             {
+                Console.WriteLine("No members found in user_member.json, starting with an empty member list.");
+            }
+            else if (count < members.Length)
+            {
+                Console.WriteLine($"");
+            }
+            
+            else{
                 Console.WriteLine("user_member.json is invalid, starting with an empty member list.");
             }
         }

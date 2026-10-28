@@ -76,38 +76,34 @@ namespace CoffeeShop
                 MenuService.ShowCategories();
                 int cat = InputHelper.ReadInt("Select category: ", 0, MenuService.Categories.Length);
 
-                switch (cat)
-        {
-            case 0:
-                ordering = false;
-                break;
-
-            default:
-                
-                MenuCategory category = MenuService.Categories[cat - 1];
-                MenuService.ShowItems(category);
-                int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
-
-                if (pick != 0)
+            if (cat == 0)
                 {
-                    MenuItem item = category.Items[pick - 1];
-                    int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+                    ordering = false;
+                }
+                else
+                {
+                    MenuCategory category = MenuService.Categories[cat - 1];
+                    MenuService.ShowItems(category);
+                    int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
 
-                    if (order.AddItem(item, qty))
+                    if (pick != 0)
                     {
-                        Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Cart is full.");
+                        MenuItem item = category.Items[pick - 1];
+                        int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+
+                        if (order.AddItem(item, qty))
+                        {
+                            Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cart is full.");
+                        }
                     }
                 }
-                break;
+            }
+            return order;
         }
-    }
-    return order;
-}
-
         static void Checkout(Order order, Member member)
         {
             order.Show();

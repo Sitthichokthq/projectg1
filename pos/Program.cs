@@ -104,6 +104,27 @@ namespace CoffeeShop
             }
             return order;
         }
+      
+        static void SelectItemFromCategory(MenuCategory category, Order order)
+        {
+            MenuService.ShowItems(category);
+            int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
+
+            if (pick != 0)
+            {
+                MenuItem item = category.Items[pick - 1];
+                int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+
+                if (order.AddItem(item, qty))
+                {
+                    Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
+                }
+                else
+                {
+                    Console.WriteLine("Cart is full.");
+                }
+            }
+        }
         static void Checkout(Order order, Member member)
         {
             order.Show();

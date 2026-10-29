@@ -44,6 +44,9 @@ namespace CoffeeShop
             {
                 Console.WriteLine((i + 1) + ". " + Categories[i].Name);
             }
+            // เลขต่อจากหมวดสุดท้าย ต้องตรงกับ removeOption / cancelOption ใน Program.TakeOrder
+            Console.WriteLine((Categories.Length + 1) + ". Remove item from order");
+            Console.WriteLine((Categories.Length + 2) + ". Cancel order");
             Console.WriteLine("0. Finish ordering / Proceed to payment");
         }
 

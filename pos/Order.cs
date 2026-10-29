@@ -46,6 +46,42 @@ namespace CoffeeShop
             return true;
         }
 
+        // เอาสินค้าออก index = ตำแหน่งในอาร์เรย์ (เริ่มที่ 0)
+        // ถ้าจำนวนที่เอาออก >= จำนวนที่มี จะลบทั้งรายการ ไม่งั้นแค่ลดจำนวน
+        public bool RemoveItem(int index, int quantity)
+        {
+            if (index < 0 || index >= count || quantity <= 0)
+            {
+                return false;
+            }
+
+            if (quantity >= lines[index].Quantity)
+            {
+                // เลื่อนรายการที่อยู่ถัดไปขึ้นมาแทน
+                for (int i = index; i < count - 1; i++)
+                {
+                    lines[i] = lines[i + 1];
+                }
+                lines[count - 1] = null;
+                count--;
+            }
+            else
+            {
+                lines[index].Quantity -= quantity;
+            }
+            return true;
+        }
+
+        public string GetLineName(int index)
+        {
+            return lines[index].Item.Name;
+        }
+
+        public int GetLineQuantity(int index)
+        {
+            return lines[index].Quantity;
+        }
+
         public int GetSubtotal()
         {
             int sum = 0;

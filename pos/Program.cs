@@ -1,7 +1,5 @@
 ﻿using System;
-// ถามว่าใช้ AI ไหม ใช้แต่ก็นิดหน่อยบางอันมันบัค
 
-//แก้คนเงินไม่พอ
 namespace CoffeeShop
 {
     internal class Program
@@ -14,16 +12,20 @@ namespace CoffeeShop
             do
             {
                 ShowWelcome();
-                Member member = IdentifyMember();
                 Order order = TakeOrder();
 
-                if (order.LineCount > 0)
+                if (order == null)
                 {
-                    Checkout(order, member);
+                    Console.WriteLine("Order cancelled.");
+                }
+                else if (order.LineCount == 0)
+                {
+                    Console.WriteLine("No orders");
                 }
                 else
                 {
-                    Console.WriteLine("No orders");
+                    Member member = IdentifyMember();
+                    Checkout(order, member);
                 }
             } while (InputHelper.ReadYesNo("\nNext customer?"));
 
@@ -31,7 +33,6 @@ namespace CoffeeShop
         }
 
         static void ShowWelcome()
-        // medthod แสดงข้อความยินดีต้อนรับสามารถแก้ไขชื่อร้านได้ แต่คิดบ่ออก
         {
             Console.WriteLine();
             Console.WriteLine("************************************");
@@ -39,90 +40,186 @@ namespace CoffeeShop
             Console.WriteLine("************************************");
         }
 
-        static Member IdentifyMember()
-        // เช็คระบบ สมาชิก
-        {
-            if (!InputHelper.ReadYesNo("Are you a member of the store?"))
-            {
-                if (InputHelper.ReadYesNo("Do you want to register as a member (get 5% discount + earn points)?"))
-                {
-                    string name = InputHelper.ReadText("Name: ");
-                    string phone = InputHelper.ReadText("Phone number: ");
-                    Member m = memberManager.Register(name, phone);
-                    Console.WriteLine("Registration successful! Member ID: " + m.Id);
-                    return m;
-                }
-                return null;
-            }
-
-            string p = InputHelper.ReadText("Enter member phone number: ");
-            Member found = memberManager.FindByPhone(p);
-            if (found == null)
-            {
-                Console.WriteLine("Member not found. Proceeding as a regular customer.");
-                return null;
-            }
-            Console.WriteLine("Hello " + found.Name + " (Total points: " + found.Points + ")");
-            return found;
-        }
-
+        // คืนค่า null = ลูกค้ายกเลิกออเดอร์
         static Order TakeOrder()
         {
             Order order = new Order();
-            bool ordering = true;
+            int removeOption = MenuService.Categories.Length + 1;
+            int cancelOption = MenuService.Categories.Length + 2;
 
-            while (ordering)
+            while (true)
             {
                 MenuService.ShowCategories();
-                int cat = InputHelper.ReadInt("Select category: ", 0, MenuService.Categories.Length);
+                int cat = InputHelper.ReadInt("Select category: ", 0, cancelOption);
 
-                switch (cat)
-        {
-            case 0:
-                ordering = false;
-                break;
-
-            default:
-                
-                MenuCategory category = MenuService.Categories[cat - 1];
-                MenuService.ShowItems(category);
-                int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
-
-                if (pick != 0)
+                if (cat == 0)
                 {
-                    MenuItem item = category.Items[pick - 1];
-                    int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
-
-                    if (order.AddItem(item, qty))
+                    return order; // จบการสั่ง ไปจ่ายเงิน
+                }
+                else if (cat == removeOption)
+                {
+                    RemoveItems(order);
+                }
+                else if (cat == cancelOption)
+                {
+                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
                     {
-                        Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Cart is full.");
+                        return null;
                     }
                 }
-                break;
+                else
+                {
+                    MenuCategory category = MenuService.Categories[cat - 1];
+                    MenuService.ShowItems(category);
+                    int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
+
+                    if (pick != 0)
+                    {
+                        MenuItem item = category.Items[pick - 1];
+                        int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+
+                        if (order.AddItem(item, qty))
+                        {
+                            Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cart is full.");
+                        }
+                    }
+                }
+            }
         }
-    }
-    return order;
-}
+
+        // เอาสินค้าออกจากออเดอร์ (ลดจำนวน หรือเอาออกทั้งรายการ)
+        static void RemoveItems(Order order)
+        {
+            if (order.LineCount == 0)
+            {
+                Console.WriteLine("The order is empty. Nothing to remove.");
+                return;
+            }
+
+            order.Show();
+            int n = InputHelper.ReadInt("Select item number to remove (0 = go back): ", 0, order.LineCount);
+            if (n == 0) return;
+
+            int index = n - 1;
+            string name = order.GetLineName(index);
+            int current = order.GetLineQuantity(index);
+            int qty = InputHelper.ReadInt("Quantity to remove (1 - " + current + "): ", 1, current);
+
+            order.RemoveItem(index, qty);
+            Console.WriteLine("Removed " + name + " x " + qty + " from the order.");
+        }
+
+        static Member IdentifyMember()
+        // เช็คระบบ สมาชิก
+        {
+            if (InputHelper.ReadYesNo("Are you a member of the store?"))
+            {
+                while (true)
+                {
+                    string p = InputHelper.ReadText("Enter member phone number: ");
+                    Member found = memberManager.FindByPhone(p);
+                    if (found != null)
+                    {
+                        Console.WriteLine("Hello " + found.Name + " (Total points: " + found.Points + ")");
+                        return found;
+                    }
+
+                    Console.WriteLine("Member not found.");
+                    if (!InputHelper.ReadYesNo("Re-enter phone number?"))
+                    {
+                        break; // ไม่กรอกใหม่ -> ไปต่อที่ตัวเลือกสมัครสมาชิก
+                    }
+                }
+            }
+
+            if (InputHelper.ReadYesNo("Do you want to register as a member (get 5% discount + earn points)?"))
+            {
+                string name = InputHelper.ReadText("Name: ");
+                string phone;
+                do
+                {
+                    phone = InputHelper.ReadText("Phone number: ");
+                } while (!InputHelper.ReadYesNo("Phone number " + phone + " is correct?"));
+
+                Member m = memberManager.Register(name, phone);
+                if (m == null)
+                {
+                    Console.WriteLine("Member list is full. Proceeding as a regular customer.");
+                    return null;
+                }
+                Console.WriteLine("Registration successful! Member ID: " + m.Id);
+                return m;
+            }
+
+            Console.WriteLine("Proceeding as a regular customer.");
+            return null;
+        }
 
         static void Checkout(Order order, Member member)
         {
-            order.Show();
+            int paid = 0; // เงินที่ลูกค้าให้มาแล้ว (สะสมถ้าลูกค้าเติมเงิน)
+            int total;
 
-            int subtotal = order.GetSubtotal();
-            int discount = PaymentService.CalculateDiscount(subtotal, member);
-            int total = subtotal - discount;
-
-            if (member != null)
+            while (true)
             {
-                Console.WriteLine("Member discount " + Member.DiscountPercent + "%: -" + discount + " Bath");
-            }
-            Console.WriteLine("Total amount to pay: " + total + " Bath");
+                if (order.LineCount == 0)
+                {
+                    Console.WriteLine("No items left. Order cancelled.");
+                    RefundIfAny(paid);
+                    return;
+                }
 
-            int paid = PaymentService.ReceiveMoney(total);
+                order.Show();
+
+                int subtotal = order.GetSubtotal();
+                int discount = PaymentService.CalculateDiscount(subtotal, member);
+                total = subtotal - discount;
+
+                if (member != null)
+                {
+                    Console.WriteLine("Member discount " + Member.DiscountPercent + "%: -" + discount + " Bath");
+                }
+                Console.WriteLine("Total amount to pay: " + total + " Bath");
+
+                if (paid == 0)
+                {
+                    paid = PaymentService.ReceiveMoney("Receive payment from customers: ");
+                }
+
+                if (paid >= total)
+                {
+                    break; // เงินพอแล้ว
+                }
+
+                Console.WriteLine("Not enough money; there's still a shortfall. " + (total - paid) + " Bath");
+                Console.WriteLine("1. Customer adds more money");
+                Console.WriteLine("2. Remove some items");
+                Console.WriteLine("3. Cancel the order");
+                int choice = InputHelper.ReadInt("Select: ", 1, 3);
+
+                if (choice == 1)
+                {
+                    paid += PaymentService.ReceiveMoney("Additional payment: ");
+                }
+                else if (choice == 2)
+                {
+                    RemoveItems(order);
+                }
+                else
+                {
+                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
+                    {
+                        Console.WriteLine("Order cancelled.");
+                        RefundIfAny(paid);
+                        return;
+                    }
+                }
+            }
+
             PaymentService.ShowChange(paid - total);
 
             if (member != null)
@@ -131,6 +228,14 @@ namespace CoffeeShop
                 Console.WriteLine("Earned " + earned + " points (Total: " + member.Points + " points)");
             }
             Console.WriteLine("Thank you for using our service.");
+        }
+
+        static void RefundIfAny(int paid)
+        {
+            if (paid > 0)
+            {
+                Console.WriteLine("Return money to customer: " + paid + " Bath");
+            }
         }
     }
 }

@@ -20,19 +20,11 @@ namespace CoffeeShop
             return subtotal * Member.DiscountPercent / 100;
         }
 
-        // รับเงินจากลูกค้า วนจนกว่าจะพอ
-        public static int ReceiveMoney(int total)
+        // รับเงินจากลูกค้า "ครั้งเดียว" (ไม่วนบังคับแล้ว)
+        // ถ้าเงินไม่พอ Program.Checkout จะให้เลือก เติมเงิน / เอาสินค้าออก / ยกเลิก
+        public static int ReceiveMoney(string prompt)
         {
-            int paid;
-            do
-            {
-                paid = InputHelper.ReadInt("Receive payment from customers: ", 0, 1000000);
-                if (paid < total)
-                {
-                    Console.WriteLine("Not enough money; there’s still a shortfall. " + (total - paid) + " Bath");
-                }
-            } while (paid < total);
-            return paid;
+            return InputHelper.ReadInt(prompt, 0, 1000000);
         }
 
         // ทอนเงิน ให้แบงก์/เหรียญใหญ่ก่อนเสมอ

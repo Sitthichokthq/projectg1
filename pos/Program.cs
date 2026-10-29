@@ -44,49 +44,73 @@ namespace CoffeeShop
         static Order TakeOrder()
         {
             Order order = new Order();
-            int removeOption = MenuService.Categories.Length + 1;
-            int cancelOption = MenuService.Categories.Length + 2;
+            bool ordering = true;
 
-            while (true)
+            while (ordering)
             {
                 MenuService.ShowCategories();
-                int cat = InputHelper.ReadInt("Select category: ", 0, cancelOption);
+                // รับค่าตัวเลือกตั้งแต่ 0 ถึง 5
+                int cat = InputHelper.ReadInt("Select category: ", 0, 5);
 
-                if (cat == 0)
+                switch (cat)
                 {
-                    return order; // จบการสั่ง ไปจ่ายเงิน
+                    case 0:
+                        ordering = false; // สั่งเสร็จแล้ว ไปขั้นตอนชำระเงิน
+                        break;
+
+                    case 1:
+                        Console.WriteLine("\n[ Selected: Coffee Category ]");
+                        SelectItemFromCategory(MenuService.Categories[0], order);
+                        break;
+
+                    case 2:
+                        Console.WriteLine("\n[ Selected: Tea / Milk Category ]");
+                        SelectItemFromCategory(MenuService.Categories[1], order);
+                        break;
+
+                    case 3:
+                        Console.WriteLine("\n[ Selected: Bakery Category ]");
+                        SelectItemFromCategory(MenuService.Categories[2], order);
+                        break;
+
+                    case 4:
+                        // ฟีเจอร์ลบสินค้าออกจากออเดอร์
+                        RemoveItems(order);
+                        break;
+
+                    case 5:
+                        // ฟีเจอร์ยกเลิกออเดอร์ทั้งหมด
+                        if (InputHelper.ReadYesNo("Cancel the whole order?"))
+                        {
+                            return null;
+                        }
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid selection. Please try again.");
+                        break;
                 }
-                else if (cat == removeOption)
+            }
+            return order;
+        }
+
+        static void SelectItemFromCategory(MenuCategory category, Order order)
+        {
+            MenuService.ShowItems(category);
+            int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
+
+            if (pick != 0)
+            {
+                MenuItem item = category.Items[pick - 1];
+                int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+
+                if (order.AddItem(item, qty))
                 {
-                    RemoveItems(order);
-                }
-                else if (cat == cancelOption)
-                {
-                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
-                    {
-                        return null;
-                    }
+                    Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
                 }
                 else
                 {
-                    MenuCategory category = MenuService.Categories[cat - 1];
-                    MenuService.ShowItems(category);
-                    int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
-
-                    if (pick != 0)
-                    {
-                        MenuItem item = category.Items[pick - 1];
-                        int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
-
-                        if (order.AddItem(item, qty))
-                        {
-                            Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Cart is full.");
-                        }
-                    }
+                    Console.WriteLine("Cart is full.");
                 }
             }
         }

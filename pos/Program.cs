@@ -36,7 +36,7 @@ namespace CoffeeShop
         {
             Console.WriteLine();
             Console.WriteLine("************************************");
-            Console.WriteLine("   Shop name");
+            Console.WriteLine("  Conqueror  ");
             Console.WriteLine("************************************");
         }
 
@@ -52,40 +52,44 @@ namespace CoffeeShop
                 MenuService.ShowCategories();
                 int cat = InputHelper.ReadInt("Select category: ", 0, cancelOption);
 
-                if (cat == 0)
+                switch (cat)
                 {
-                    return order; // จบการสั่ง ไปจ่ายเงิน
-                }
-                else if (cat == removeOption)
-                {
-                    RemoveItems(order);
-                }
-                else if (cat == cancelOption)
-                {
-                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    MenuCategory category = MenuService.Categories[cat - 1];
-                    MenuService.ShowItems(category);
-                    int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
+                    case 0:
+                        return order; // จบการสั่ง ไปจ่ายเงิน
 
-                    if (pick != 0)
-                    {
-                        MenuItem item = category.Items[pick - 1];
-                        int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+                    // เลขเมนูเอาออก/ยกเลิก ขึ้นกับจำนวนหมวด จึงใช้ when เช็คเงื่อนไขแทนค่าคงที่
+                    case int c when c == removeOption:
+                        RemoveItems(order);
+                        break;
 
-                        if (order.AddItem(item, qty))
+                    case int c when c == cancelOption:
+                        if (InputHelper.ReadYesNo("Cancel the whole order?"))
                         {
-                            Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
+                            return null;
                         }
-                        else
+                        break;
+
+                    default:
+                    {
+                        MenuCategory category = MenuService.Categories[cat - 1];
+                        MenuService.ShowItems(category);
+                        int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
+
+                        if (pick != 0)
                         {
-                            Console.WriteLine("Cart is full.");
+                            MenuItem item = category.Items[pick - 1];
+                            int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
+
+                            if (order.AddItem(item, qty))
+                            {
+                                Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Cart is full.");
+                            }
                         }
+                        break;
                     }
                 }
             }
@@ -201,22 +205,24 @@ namespace CoffeeShop
                 Console.WriteLine("3. Cancel the order");
                 int choice = InputHelper.ReadInt("Select: ", 1, 3);
 
-                if (choice == 1)
+                switch (choice)
                 {
-                    paid += PaymentService.ReceiveMoney("Additional payment: ");
-                }
-                else if (choice == 2)
-                {
-                    RemoveItems(order);
-                }
-                else
-                {
-                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
-                    {
-                        Console.WriteLine("Order cancelled.");
-                        RefundIfAny(paid);
-                        return;
-                    }
+                    case 1:
+                        paid += PaymentService.ReceiveMoney("Additional payment: ");
+                        break;
+
+                    case 2:
+                        RemoveItems(order);
+                        break;
+
+                    case 3:
+                        if (InputHelper.ReadYesNo("Cancel the whole order?"))
+                        {
+                            Console.WriteLine("Order cancelled.");
+                            RefundIfAny(paid);
+                            return;
+                        }
+                        break;
                 }
             }
 

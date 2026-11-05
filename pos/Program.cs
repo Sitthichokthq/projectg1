@@ -36,7 +36,7 @@ namespace CoffeeShop
         {
             Console.WriteLine();
             Console.WriteLine("************************************");
-            Console.WriteLine("  Conqueror  ");
+            Console.WriteLine("   Shop name");
             Console.WriteLine("************************************");
         }
 
@@ -55,16 +55,6 @@ namespace CoffeeShop
                 switch (cat)
                 {
                     case 0:
-<<<<<<< HEAD
-                        return order; // จบการสั่ง ไปจ่ายเงิน
-
-                    // เลขเมนูเอาออก/ยกเลิก ขึ้นกับจำนวนหมวด จึงใช้ when เช็คเงื่อนไขแทนค่าคงที่
-                    case int c when c == removeOption:
-                        RemoveItems(order);
-                        break;
-
-                    case int c when c == cancelOption:
-=======
                         ordering = false; // สั่งเสร็จแล้ว ไปขั้นตอนชำระเงิน
                         break;
 
@@ -90,7 +80,6 @@ namespace CoffeeShop
 
                     case 5:
                         // ฟีเจอร์ยกเลิกออเดอร์ทั้งหมด
->>>>>>> ae946058e15744d903a2e96daf0dfd361af6bbbd
                         if (InputHelper.ReadYesNo("Cancel the whole order?"))
                         {
                             return null;
@@ -98,29 +87,6 @@ namespace CoffeeShop
                         break;
 
                     default:
-<<<<<<< HEAD
-                    {
-                        MenuCategory category = MenuService.Categories[cat - 1];
-                        MenuService.ShowItems(category);
-                        int pick = InputHelper.ReadInt("Select item: ", 0, category.Items.Length);
-
-                        if (pick != 0)
-                        {
-                            MenuItem item = category.Items[pick - 1];
-                            int qty = InputHelper.ReadInt("Quantity: ", 1, 99);
-
-                            if (order.AddItem(item, qty))
-                            {
-                                Console.WriteLine("Added " + item.Name + " x " + qty + " to the order.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Cart is full.");
-                            }
-                        }
-                        break;
-                    }
-=======
                         Console.WriteLine("Invalid selection. Please try again.");
                         break;
                 }
@@ -145,7 +111,6 @@ namespace CoffeeShop
                 else
                 {
                     Console.WriteLine("Cart is full.");
->>>>>>> ae946058e15744d903a2e96daf0dfd361af6bbbd
                 }
             }
         }
@@ -260,24 +225,22 @@ namespace CoffeeShop
                 Console.WriteLine("3. Cancel the order");
                 int choice = InputHelper.ReadInt("Select: ", 1, 3);
 
-                switch (choice)
+                if (choice == 1)
                 {
-                    case 1:
-                        paid += PaymentService.ReceiveMoney("Additional payment: ");
-                        break;
-
-                    case 2:
-                        RemoveItems(order);
-                        break;
-
-                    case 3:
-                        if (InputHelper.ReadYesNo("Cancel the whole order?"))
-                        {
-                            Console.WriteLine("Order cancelled.");
-                            RefundIfAny(paid);
-                            return;
-                        }
-                        break;
+                    paid += PaymentService.ReceiveMoney("Additional payment: ");
+                }
+                else if (choice == 2)
+                {
+                    RemoveItems(order);
+                }
+                else
+                {
+                    if (InputHelper.ReadYesNo("Cancel the whole order?"))
+                    {
+                        Console.WriteLine("Order cancelled.");
+                        RefundIfAny(paid);
+                        return;
+                    }
                 }
             }
 

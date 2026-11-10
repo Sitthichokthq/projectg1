@@ -36,7 +36,7 @@ namespace CoffeeShop
         {
             Console.WriteLine();
             Console.WriteLine("************************************");
-            Console.WriteLine("   Shop name");
+            Console.WriteLine("  Conqueror ");
             Console.WriteLine("************************************");
         }
 
